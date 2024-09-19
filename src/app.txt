@@ -1,0 +1,458 @@
+
+// import Sidebar from './components/sidebar';
+// import React, { useState } from 'react';
+// import ReactMarkdown from 'react-markdown';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faCopy } from '@fortawesome/free-solid-svg-icons';
+
+
+// function ChatUI() {
+//   const [messages, setMessages] = useState([]);
+//   const [input, setInput] = useState('');
+
+//   const sendMessage = async () => {
+//     if (input.trim() !== '') {
+//       const userMessage = { text: input, sender: 'User' };
+//       setMessages((prev) => [...prev, userMessage]);
+//       setInput('');
+
+//       // Simulate an API call (replace with your backend call)
+//       const response = await fetch('http://127.0.0.1:5000/chat', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ message: input }),
+//       });
+
+//       const data = await response.json();
+//       const assistantMessage = { text: data.response, sender: 'Assistant' };
+//       setMessages((prev) => [...prev, assistantMessage]);
+//     }
+//   };
+
+//   const handleKeyPress = (e) => {
+//     if (e.key === 'Enter') {
+//       sendMessage();
+//     }
+//   };
+//   const copyToClipboard = (text) => {
+//     navigator.clipboard.writeText(text);
+//     alert("Copied to clipboard!");
+//   };
+
+//   return (
+//     <div style={styles.container}>
+//       <Sidebar /> 
+
+//       <div style={styles.chatContainer}>
+//         <div style={styles.chatWindow}>
+//           {messages.map((msg, index) => (
+//             <div key={index} style={styles.messageContainer}>
+//               {msg.sender === 'User' ? (
+//                 <div style={styles.userChat}>
+//                   <img src="/man.png" alt="User" style={styles.avatar} />
+//                   <div style={{ ...styles.message, ...styles.userMessage }}>
+//                     {msg.text}
+//                   </div>
+//                 </div>
+//               ) : (
+//                 <div style={styles.assistantChat}>
+//                   <img src="/ai-technology.png" alt="Assistant" style={styles.avatar} />
+//                   <div style={{ ...styles.message, ...styles.assistantMessage }}>
+//                     <ReactMarkdown>{msg.text}</ReactMarkdown>
+//                     <button onClick={() => copyToClipboard(msg.text)} style={styles.copyButton}>
+//                       <FontAwesomeIcon icon={faCopy} />
+//                     </button>
+//                   </div>
+//                 </div>
+//               )}
+//               </div>
+//           ))}
+//         </div>
+//         <div style={styles.inputContainer}>
+//           <input
+//             type="text"
+//             value={input}
+//             onChange={(e) => setInput(e.target.value)}
+//             onKeyPress={handleKeyPress}
+//             style={styles.input}
+//             placeholder="Type a message..."
+//           />
+//           <button onClick={sendMessage} style={styles.sendButton}>
+//             Send
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// const styles = {
+//   container: {
+//     display: 'flex',
+//     height: '100vh',
+//   },
+//   chatContainer: {
+//     display: 'flex',
+//     flexDirection: 'column',
+//     height: '95vh',
+//     justifyContent: 'flex-end',
+//     backgroundColor: '#f1f1f1',
+//     padding: '20px',
+//     flex: 1, // Adjust based on sidebar
+//   },
+//   chatWindow: {
+//     flex: 1,
+//     overflowY: 'auto',
+//     padding: '10px',
+//     backgroundColor: '#fff',
+//     border: '1px solid #ccc',
+//     display: 'flex',
+//     flexDirection: 'column',
+//   },
+//   messageContainer: {
+//     display: 'flex',
+//     alignItems: 'flex-start',
+//     marginBottom: '10px',
+//   },
+//   userChat: {
+//     display: 'flex',
+//     alignItems: 'center',
+//     marginLeft: 'auto',
+//     flexDirection: 'row-reverse',
+//   },
+//   assistantChat: {
+//     display: 'flex',
+//     alignItems: 'center',
+//   },
+//   avatar: {
+//     width: '40px',
+//     height: '40px',
+//     borderRadius: '50%',
+//     marginRight: '10px',
+//   },
+//   message: {
+//     margin: '10px 0',
+//     padding: '10px',
+//     borderRadius: '20px',
+//     maxWidth: '60%',
+//     display: 'inline-block',
+//     wordWrap: 'break-word',
+//     whiteSpace: 'pre-wrap',
+//   },
+//   userMessage: {
+//     backgroundColor: '#007bff',
+//     color: '#fff',
+//     marginLeft: 'auto',
+//     textAlign: 'right',
+//     width: 'fit-content',
+//   },
+//   assistantMessage: {
+//     backgroundColor: '#e1e1e1',
+//     color: '#000',
+//     marginRight: 'auto',
+//     textAlign: 'left',
+//     width: 'fit-content',
+//   },
+//   copyButton: {
+//     background: 'none',
+//     border: 'none',
+//     cursor: 'pointer',
+//     position: 'absolute',
+//     top: '10px',
+//     right: '-30px',
+//   },
+//   inputContainer: {
+//     display: 'flex',
+//     borderTop: '1px solid #ccc',
+//     padding: '10px',
+//     backgroundColor: '#fff',
+//   },
+//   input: {
+//     flex: 1,
+//     padding: '10px',
+//     borderRadius: '5px',
+//     border: '1px solid #ccc',
+//     marginRight: '10px',
+//   },
+//   sendButton: {
+//     padding: '10px 20px',
+//     backgroundColor: '#007bff',
+//     color: '#fff',
+//     border: 'none',
+//     borderRadius: '5px',
+//     cursor: 'pointer',
+//   },
+// };
+
+// export default ChatUI;
+
+'use client'
+import Sidebar from './components/sidebar';
+import React, { useState ,useEffect} from 'react';
+import ReactMarkdown from 'react-markdown';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+
+
+// Define a custom components function for ReactMarkdown to format code blocks
+const components = {
+  code({ node, inline, className, children, ...props }) {
+    const match = /language-(\w+)/.exec(className || '');
+    return !inline && match ? (
+      <div style={styles.codeBlockContainer}>
+        <SyntaxHighlighter language={match[1]} style={dracula} {...props}>
+          {String(children).replace(/\n$/, '')}
+        </SyntaxHighlighter>
+        <button
+          onClick={() => copyToClipboard(String(children))}
+          style={styles.copyButton}
+        >
+          <FontAwesomeIcon icon={faCopy} />
+        </button>
+      </div>
+    ) : (
+      <code className={className} {...props}>
+        {children}
+      </code>
+    );
+  },
+};
+const copyToClipboard = (text) => {
+  navigator.clipboard.writeText(text);
+  alert('Copied to clipboard!');
+  };
+
+
+function ChatUI() {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState('');
+  const [sessionId, setSessionId] = useState('');
+  const [sessions, setSessions] = useState([]); // For sidebar
+
+  useEffect(() => {
+    fetchSessions(); // Fetch sessions for the sidebar
+    const storedSessionId = localStorage.getItem('session_id');
+    if (storedSessionId) {
+      setSessionId(storedSessionId);
+      loadMessages(storedSessionId);
+    }
+  }, []);
+
+  const fetchSessions = async () => {
+    const response = await fetch('http://127.0.0.1:5000/get-sessions');
+    const data = await response.json();
+    setSessions(data.sessions); // Set sessions for sidebar
+  };
+
+  const loadMessages = async (sessionId) => {
+    const response = await fetch(`http://127.0.0.1:5000/load-chat/${sessionId}`);
+    const data = await response.json();
+    setMessages(data.messages);
+  };
+
+  const sendMessage = async () => {
+    if (input.trim() !== '') {
+      const userMessage = { text: input, sender: 'User' };
+      setMessages((prev) => [...prev, userMessage]);
+      setInput('');
+
+      // If no sessionId exists, generate a new one
+      if (!sessionId) {
+        const newSessionId = Math.random().toString(36).substr(2, 9);
+        setSessionId(newSessionId);
+        localStorage.setItem('session_id', newSessionId);
+      }
+
+      const response = await fetch('http://127.0.0.1:5000/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: input, session_id: sessionId || localStorage.getItem('session_id') }),
+      });
+
+      const data = await response.json();
+      setSessionId(data.session_id); // Store session ID after first message if generated by the backend
+      localStorage.setItem('session_id', data.session_id);
+
+      const assistantMessage = { text: data.response, sender: 'Assistant' };
+      setMessages((prev) => [...prev, assistantMessage]);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  };
+
+
+
+  return (
+    <div style={styles.container}>
+      <Sidebar sessions={sessions} setSessionId={setSessionId} />
+
+      <div style={styles.chatContainer}>
+        <div style={styles.chatWindow}>
+          {messages.map((msg, index) => (
+            <div key={index} style={styles.messageContainer}>
+              {msg.sender === 'User' ? (
+                <div style={styles.userChat}>
+                  <img src="/man.png" alt="User" style={styles.avatar} />
+                  <div style={{ ...styles.message, ...styles.userMessage }}>
+                    {msg.text}
+                  </div>
+                </div>
+              ) : (
+                <div style={styles.assistantChat}>
+                  <img src="/ai-technology.png" alt="Assistant" style={styles.avatar} />
+                  <div style={{ ...styles.message, ...styles.assistantMessage }}>
+                    <ReactMarkdown components={components}>{msg.text}</ReactMarkdown>
+                    <button onClick={() => copyToClipboard(String(msg.text))}
+                    style={styles.copymsgButton}
+                    >
+                      <FontAwesomeIcon icon={faCopy}/> COPY 
+                    </button>
+                  </div>
+                  
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        <div style={styles.inputContainer}>
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={handleKeyPress}
+            style={styles.input}
+            placeholder="Type a message..."
+          />
+          <button onClick={sendMessage} style={styles.sendButton}>
+            Send
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const styles = {
+  container: {
+    display: 'flex',
+    height: '100vh',
+  },
+  chatContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '95vh',
+    justifyContent: 'flex-end',
+    backgroundColor: '#f1f1f1',
+    padding: '20px',
+    flex: 1,
+  },
+  chatWindow: {
+    flex: 1,
+    overflowY: 'auto',
+    padding: '10px',
+    backgroundColor: '#fff',
+    border: '1px solid #ccc',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  messageContainer: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    marginBottom: '10px',
+  },
+  userChat: {
+    display: 'flex',
+    alignItems: 'center',
+    marginLeft: 'auto',
+    flexDirection: 'row-reverse',
+  },
+  assistantChat: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  avatar: {
+    width: '40px',
+    height: '40px',
+    borderRadius: '50%',
+    marginRight: '10px',
+  },
+  message: {
+    margin: '10px 0',
+    padding: '10px',
+    borderRadius: '20px',
+    maxWidth: '60%',
+    display: 'inline-block',
+    wordWrap: 'break-word',
+    whiteSpace: 'pre-wrap',
+  },
+  userMessage: {
+    backgroundColor: '#007bff',
+    color: '#fff',
+    marginLeft: 'auto',
+    textAlign: 'right',
+    width: 'fit-content',
+  },
+  assistantMessage: {
+    backgroundColor: '#e1e1e1',
+    color: '#000',
+    marginRight: 'auto',
+    textAlign: 'left',
+    width: 'fit-content',
+    position: 'relative',
+  },
+  codeBlockContainer: {
+    position: 'relative',
+    padding: '10px',
+  },
+  copyButton: {
+    background: 'white',
+    border: 'none',
+    cursor: 'pointer',
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
+  },
+  copymsgButton: {
+    background: 'none',
+    border: 'none',
+    borderwidth: 'medium',
+    borderradius: '2rem',
+    cursor: 'pointer',
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
+  },
+  inputContainer: {
+    display: 'flex',
+    borderTop: '1px solid #ccc',
+    padding: '10px',
+    backgroundColor: '#fff',
+  },
+  input: {
+    flex: 1,
+    padding: '10px',
+    borderRadius: '5px',
+    border: '1px solid #ccc',
+    marginRight: '10px',
+  },
+  sendButton: {
+    padding: '10px 20px',
+    backgroundColor: '#007bff',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  },
+};
+
+export default ChatUI;
